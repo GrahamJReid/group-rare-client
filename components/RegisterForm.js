@@ -7,21 +7,64 @@ import { registerUser } from '../utils/auth'; // Update with path to registerUse
 function RegisterForm({ user, updateUser }) {
   const [formData, setFormData] = useState({
     bio: '',
+    profile_image_url: '',
+    // created_on: '',
+    active: false,
     uid: user.uid,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    registerUser(formData).then(() => updateUser(user.uid));
+    const currentDate = new Date().toISOString().split('T')[0]; // Get the current date
+    const updatedFormData = { ...formData, created_on: currentDate };
+    registerUser(updatedFormData)
+      .then(() => updateUser(user.uid));
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Gamer Bio</Form.Label>
-        <Form.Control as="textarea" name="bio" required placeholder="Enter your Bio" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} />
-        <Form.Text className="text-muted">Let other gamers know a little bit about you...</Form.Text>
+        <Form.Label>User Bio</Form.Label>
+        <Form.Control
+          as="textarea"
+          name="bio"
+          required
+          placeholder="Enter your Bio"
+          value={formData.bio}
+          onChange={handleInputChange}
+        />
+        <Form.Text className="text-muted">Let other users know a little bit about you...</Form.Text>
       </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Profile Image</Form.Label>
+        <Form.Control
+          name="profile_image_url"
+          required
+          value={formData.profile_image_url}
+          onChange={handleInputChange}
+        />
+      </Form.Group>
+
+      {/* <Form.Group className="mb-3">
+        <Form.Label>Date</Form.Label>
+        <Form.Control
+          name="created_on"
+          type="date"
+          required
+          value={formData.created_on}
+          onChange={handleInputChange}
+        />
+      </Form.Group> */}
+
       <Button variant="primary" type="submit">
         Submit
       </Button>
