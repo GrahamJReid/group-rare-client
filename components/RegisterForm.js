@@ -6,10 +6,13 @@ import { registerUser } from '../utils/auth'; // Update with path to registerUse
 
 function RegisterForm({ user, updateUser }) {
   const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
     bio: '',
     profile_image_url: '',
-    // created_on: '',
-    active: false,
+    email: '',
+    active: true,
+    is_staff: true,
     uid: user.uid,
   });
 
@@ -31,7 +34,28 @@ function RegisterForm({ user, updateUser }) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
+
+      <Form.Group className="mb-3">
+        <Form.Label>First Name</Form.Label>
+        <Form.Control
+          name="first_name"
+          required
+          value={formData.first_name}
+          onChange={handleInputChange}
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3">
+        <Form.Label>Last Name</Form.Label>
+        <Form.Control
+          name="last_name"
+          required
+          value={formData.last_name}
+          onChange={handleInputChange}
+        />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBio">
         <Form.Label>User Bio</Form.Label>
         <Form.Control
           as="textarea"
@@ -54,16 +78,15 @@ function RegisterForm({ user, updateUser }) {
         />
       </Form.Group>
 
-      {/* <Form.Group className="mb-3">
-        <Form.Label>Date</Form.Label>
+      <Form.Group className="mb-3">
+        <Form.Label>Email</Form.Label>
         <Form.Control
-          name="created_on"
-          type="date"
+          name="email"
           required
-          value={formData.created_on}
+          value={formData.email}
           onChange={handleInputChange}
         />
-      </Form.Group> */}
+      </Form.Group>
 
       <Button variant="primary" type="submit">
         Submit
