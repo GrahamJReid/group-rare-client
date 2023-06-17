@@ -8,14 +8,17 @@ function RegisterForm({ user, updateUser }) {
   const [formData, setFormData] = useState({
     bio: '',
     profile_image_url: '',
-    created_on: '',
+    // created_on: '',
     active: false,
     uid: user.uid,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    registerUser(formData).then(() => updateUser(user.uid));
+    const currentDate = new Date().toISOString().split('T')[0]; // Get the current date
+    const updatedFormData = { ...formData, created_on: currentDate };
+    registerUser(updatedFormData)
+      .then(() => updateUser(user.uid));
   };
 
   const handleInputChange = (e) => {
@@ -51,7 +54,7 @@ function RegisterForm({ user, updateUser }) {
         />
       </Form.Group>
 
-      <Form.Group className="mb-3">
+      {/* <Form.Group className="mb-3">
         <Form.Label>Date</Form.Label>
         <Form.Control
           name="created_on"
@@ -60,7 +63,7 @@ function RegisterForm({ user, updateUser }) {
           value={formData.created_on}
           onChange={handleInputChange}
         />
-      </Form.Group>
+      </Form.Group> */}
 
       <Button variant="primary" type="submit">
         Submit
