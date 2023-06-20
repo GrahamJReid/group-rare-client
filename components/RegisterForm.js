@@ -16,14 +16,6 @@ function RegisterForm({ user, updateUser }) {
     uid: user.uid,
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const currentDate = new Date().toISOString().split('T')[0]; // Get the current date
-    const updatedFormData = { ...formData, created_on: currentDate };
-    registerUser(updatedFormData)
-      .then(() => updateUser(user.uid));
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -32,8 +24,25 @@ function RegisterForm({ user, updateUser }) {
     }));
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const currentDate = new Date().toISOString().split('T')[0]; // Get the current date
+    const updatedFormData = { ...formData, created_on: currentDate };
+    registerUser(updatedFormData)
+      .then(() => updateUser(user.uid));
+  };
+
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form
+      onSubmit={handleSubmit}
+      className="text-center d-flex flex-column justify-content-center align-content-center"
+      style={{
+        height: '90vh',
+        padding: '30px',
+        maxWidth: '500px',
+        margin: '0 auto',
+      }}
+    >
 
       <Form.Group className="mb-3">
         <Form.Label>First Name</Form.Label>
@@ -69,7 +78,7 @@ function RegisterForm({ user, updateUser }) {
       </Form.Group>
 
       <Form.Group className="mb-3">
-        <Form.Label>Profile Image</Form.Label>
+        <Form.Label>Profile Image Url</Form.Label>
         <Form.Control
           name="profile_image_url"
           required
@@ -88,8 +97,8 @@ function RegisterForm({ user, updateUser }) {
         />
       </Form.Group>
 
-      <Button variant="primary" type="submit">
-        Submit
+      <Button variant="primary" type="submit" style={{ backgroundColor: '#003049', marginTop: '20px' }}>
+        Register
       </Button>
     </Form>
   );
