@@ -17,6 +17,20 @@ const getAllPosts = () => new Promise((resolve, reject) => {
     })
     .catch(reject);
 });
+const getMyPosts = (uid) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/posts`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const usersPosts = Object.values(data).filter((item) => item.rare_user_id.uid === uid);
+      resolve(usersPosts);
+    })
+    .catch(reject);
+});
 const getSinglePost = (id) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/posts/${id}`, {
     method: 'GET',
@@ -63,5 +77,5 @@ const createPost = (payload) => new Promise((resolve, reject) => {
 });
 
 export {
-  getAllPosts, deletePosts, getSinglePost, updatePost, createPost,
+  getAllPosts, deletePosts, getSinglePost, updatePost, createPost, getMyPosts,
 };
