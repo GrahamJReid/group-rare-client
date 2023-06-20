@@ -20,8 +20,8 @@ const getUsers = () => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getSingleUser = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/users/${uid}.json`, {
+const getSingleUser = (id) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/users/${id}.json`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
