@@ -80,7 +80,7 @@ const PostForm = ({ obj }) => {
       };
 
       // Send POST request to your API
-      createPost(post).then(() => router.push('/posts/allPosts'));
+      createPost(post).then(() => router.push('/posts/myPosts'));
     }
   };
   return (
