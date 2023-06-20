@@ -17,6 +17,17 @@ const getAllPosts = () => new Promise((resolve, reject) => {
     })
     .catch(reject);
 });
+const getSinglePost = (id) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/posts/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve((data)))
+    .catch(reject);
+});
 const deletePosts = (id) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/posts/${id}`, {
     method: 'DELETE',
@@ -28,4 +39,4 @@ const deletePosts = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export { getAllPosts, deletePosts };
+export { getAllPosts, deletePosts, getSinglePost };

@@ -19,7 +19,7 @@ function AllPosts() {
     <>
       <h1>All Posts page title</h1>
       {posts.map((post) => (
-        <section key={`game--${post.id}`} className="game">
+        <section key={`post--${post.id}`} className="post">
           <PostCard id={post.id} title={post.title} imageUrl={post.image_url} onUpdate={displayPosts} />
         </section>
       ))}

@@ -30,10 +30,10 @@ const PostCard = ({
       <Card.Footer className="text-muted">Skill Level: </Card.Footer>
       <Button
         onClick={() => {
-          router.push(`/games/edit/${id}`);
+          router.push(`/posts/${id}`);
         }}
       >
-        Edit Game
+        Post Details
       </Button>
       <Button
         onClick={deletethisPost}
