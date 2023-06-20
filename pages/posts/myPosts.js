@@ -3,23 +3,25 @@ import { Button } from 'react-bootstrap';
 
 import { useRouter } from 'next/router';
 import PostCard from '../../components/posts/PostCard';
-import { getAllPosts } from '../../utils/data/postsData';
+import { getMyPosts } from '../../utils/data/postsData';
+import { useAuth } from '../../utils/context/authContext';
 
-function AllPosts() {
+function MyPosts() {
   const [posts, setPosts] = useState([]);
   const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
-    getAllPosts().then((data) => setPosts(data));
-  }, []);
+    getMyPosts(user.uid).then((data) => setPosts(data));
+  }, [user]);
 
   const displayPosts = () => {
-    getAllPosts().then((data) => setPosts(data));
+    getMyPosts(user.uid).then((data) => setPosts(data));
   };
 
   return (
     <>
-      <h1>All Posts page title</h1>
+      <h1>My Posts</h1>
       <div>
         <div>
           <Button
@@ -40,4 +42,4 @@ function AllPosts() {
   );
 }
 
-export default AllPosts;
+export default MyPosts;
