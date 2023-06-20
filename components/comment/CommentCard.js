@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+// import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Card } from 'react-bootstrap';
 import { deleteComment } from '../../utils/data/commentData';
@@ -20,9 +20,27 @@ const CommentCard = ({
 
   const router = useRouter();
 
+  // const [authorName, setAuthorName] = useState('');
+
+  // // Fetch the author's name based on the authorId
+  // useEffect(() => {
+  //   // Assuming you have a function to fetch the user data by id, like `fetchUserById`
+  //   fetchUserById(authorId)
+  //     .then((user) => {
+  //       setAuthorName(user.name);
+  //     })
+  //     .catch((error) => {
+  //       // Handle error if user data fetching fails
+  //       console.error('Failed to fetch user data:', error);
+  //     });
+  // }, [authorId]);
+
   return (
     <Card className="text-center">
-      <Card.Header />
+      <Card.Header>
+        {/* {authorName} */}
+        Author of Comment
+      </Card.Header>
       <Card.Body>
         <Card.Title>
           {createdOn}
