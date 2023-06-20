@@ -67,7 +67,7 @@ const PostForm = ({ obj }) => {
 
       };
       updatePost(postUpdate)
-        .then(() => router.push('/posts/myPosts'));
+        .then(() => router.push(`/posts/${obj.id}`));
     } else {
       const post = {
         title: currentPost.title,
