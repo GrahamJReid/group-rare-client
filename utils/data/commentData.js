@@ -25,8 +25,8 @@ const getSingleComment = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getAllComments = () => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/comments`, {
+const getAllCommentsByPostId = (postId) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/comments?postId=${postId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -61,5 +61,5 @@ const deleteComment = (comment) => new Promise((resolve, reject) => {
 });
 
 export {
-  createComment, getAllComments, getSingleComment, updateComment, deleteComment,
+  createComment, getAllCommentsByPostId, getSingleComment, updateComment, deleteComment,
 };

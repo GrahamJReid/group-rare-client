@@ -1,25 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
-import { PropTypes } from 'prop-types';
 import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import CommentCard from '../../components/comment/CommentCard';
-import { getAllComments } from '../../utils/data/commentData';
+import { getAllCommentsByPostId } from '../../utils/data/commentData';
 
-function PostComments({ postId }) {
+function PostComments() {
   const [comments, setComments] = useState([]);
   const router = useRouter();
-
+  const { id } = router.query;
   const showComments = () => {
-    getAllComments().then((data) => setComments(data));
+    getAllCommentsByPostId(id).then((data) => setComments(data));
   };
   useEffect(() => {
     showComments();
   }, []);
-
-  // Filter the comments based on the post ID
-  const filteredComments = comments.filter(
-    (comment) => comment.postId === postId,
-  );
 
   return (
     <article className="comments">
@@ -31,7 +26,7 @@ function PostComments({ postId }) {
         Add a Comment
       </Button>
       {/* converting snake case data to camel case data for client */}
-      {filteredComments.map((comment) => (
+      {comments.map((comment) => (
         <section key={`comment--${comment.id}`} className="comment">
           <CommentCard
             id={comment.id}
@@ -46,9 +41,5 @@ function PostComments({ postId }) {
     </article>
   );
 }
-
-PostComments.propTypes = {
-  postId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-};
 
 export default PostComments;
