@@ -1,26 +1,23 @@
+/* eslint-disable no-tabs */
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { viewUserDetails } from '../../utils/data/userData';
-import PostCard from '../../components/posts/PostCard';
+import { getSingleUser } from '../../utils/data/userData';
+import { useAuth } from '../../utils/context/authContext';
 
 export default function ViewUser() {
   const [userDetails, setUserDetails] = useState({});
   const router = useRouter();
-
-  // grab id from url
+  const { user } = useAuth();
   const { id } = router.query;
 
-  const getAllUserPosts = () => {
-    viewUserDetails(id).then(setUserDetails);
-  };
-
-  // make call to API layer to get the data
   useEffect(() => {
-    getAllUserPosts();
-  }, [id]);
+    getSingleUser(id).then(setUserDetails);
+  }, [user]);
 
   return (
     <div>
+      <h1 style={{ marginTop: '75px' }}>User Details</h1>
       <div className="mt-5 d-flex flex-wrap" style={{ marginTop: '100px' }}>
         <div className="d-flex flex-column">
           <img src={userDetails.profile_image_url} alt={userDetails.first_name} style={{ width: '300px' }} />
@@ -33,11 +30,6 @@ export default function ViewUser() {
           <p>{userDetails.bio}</p>
           <hr />
         </div>
-      </div>
-      <div className="d-flex flex-wrap text-center" style={{ marginTop: '50px' }}>
-        {userDetails.posts?.map((post) => (
-          <PostCard key={post.id} postObj={post} onUpdate={getAllUserPosts} />
-        ))};
       </div>
     </div>
   );

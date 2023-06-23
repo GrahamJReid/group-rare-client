@@ -21,17 +21,14 @@ const getUsers = () => new Promise((resolve, reject) => {
 });
 
 const getSingleUser = (id) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/users`, {
+  fetch(`${clientCredentials.databaseURL}/users/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   })
     .then((response) => response.json())
-    .then((data) => {
-      const usersInfo = Object.values(data).filter((item) => item.rare_user_id === id);
-      resolve(usersInfo);
-    })
+    .then((data) => resolve((data)))
     .catch(reject);
 });
 
@@ -73,7 +70,7 @@ const getUserPosts = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const viewMyPosts = (uid) => new Promise((resolve, reject) => {
+const viewMyPosts = (id) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/posts`, {
     method: 'GET',
     headers: {
@@ -82,7 +79,7 @@ const viewMyPosts = (uid) => new Promise((resolve, reject) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      const usersPosts = Object.values(data).filter((item) => item.rare_user_id.uid === uid);
+      const usersPosts = Object.values(data).filter((item) => item.rare_user.uid === id);
       resolve(usersPosts);
     })
     .catch(reject);

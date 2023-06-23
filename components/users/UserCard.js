@@ -24,16 +24,16 @@ const UserCard = ({
   };
 
   return (
-    <Card className="text-center" style={{ width: '200px' }}>
-      <Card.Img variant="top" src={profile_image_url} alt={first_name} style={{ height: '250px' }} />
+    <Card className="text-center" style={{ width: '230px' }}>
+      <Card.Img variant="top" src={profile_image_url} alt={first_name} style={{ height: '250px', padding: '25px' }} />
       <Card.Header>{first_name} {last_name}</Card.Header>
-      <Card.Body style={{ height: '100px' }}>
+      <Card.Body style={{ height: '75px' }}>
         <Card.Title style={{ fontSize: '14px' }}>Created: {created_on}</Card.Title>
         <Card.Text style={{ fontSize: '12px' }}>Email:{'\n'}
           {email}
         </Card.Text>
       </Card.Body>
-      <div className="d-flex">
+      <div className="align-items-center d-flex" style={{ margin: '0 auto', marginBottom: '10px' }}>
         <Button
           onClick={() => {
             router.push(`/users/edit/${id}`);
