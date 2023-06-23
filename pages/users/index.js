@@ -11,7 +11,7 @@ function Home() {
   useEffect(() => {
     displayUser();
   }, []);
-
+  console.warn(users);
   return (
     <article className="text-center my-4" id="users">
       <h1 style={{ marginTop: '40px' }}>Users</h1>
@@ -30,6 +30,7 @@ function Home() {
               profile_image_url={user.profile_image_url}
               created_on={user.created_on}
               email={user.email}
+              uid={user.uid}
               onUpdate={displayUser}
             />
           </section>

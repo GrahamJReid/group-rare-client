@@ -1,9 +1,11 @@
 /* eslint-disable camelcase */
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
+import { useAuth } from '../utils/context/authContext';
+import { createSubscription, deleteSubscription } from '../utils/data/subscriptionData';
 
 const UserCard = ({
   id,
@@ -13,9 +15,19 @@ const UserCard = ({
   created_on,
   email,
   onUpdate,
+  uid,
 }) => {
   const router = useRouter();
-
+  const { user } = useAuth();
+  const [counter, setCounter] = useState(0);
+  const [subObj, setSubObj] = useState({});
+  const payload = {
+    createdOn: '2023-06-14',
+    endedOn: '2023-06-14',
+    authorId: `${user.uid}`,
+    followId: `${uid}`,
+  };
+  console.warn(payload);
   const deleteUser = () => {
     if (window.confirm('Delete user?')) {
       deleteUser(id).then(() => onUpdate());
@@ -51,6 +63,34 @@ const UserCard = ({
         >
           Delete
         </Button>
+
+        {counter === 0
+          ? (
+            <Button
+              onClick={
+
+                 () => {
+                   setCounter(1);
+                   createSubscription(payload).then((obj) => setSubObj(obj));
+                 }
+                }
+            >
+              Subscribe
+            </Button>
+          ) : (
+            <Button
+              onClick={
+
+             () => {
+               setCounter(0);
+               deleteSubscription(subObj.id);
+             }
+            }
+            >
+              UnSubscribe
+            </Button>
+          )}
+
       </div>
 
     </Card>
@@ -65,6 +105,7 @@ UserCard.propTypes = {
   created_on: PropTypes.number.isRequired,
   email: PropTypes.number.isRequired,
   onUpdate: PropTypes.func.isRequired,
+  uid: PropTypes.string.isRequired,
 };
 
 export default UserCard;
