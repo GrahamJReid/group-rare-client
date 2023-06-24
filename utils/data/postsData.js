@@ -42,6 +42,22 @@ const getSinglePost = (id) => new Promise((resolve, reject) => {
     .then((data) => resolve((data)))
     .catch(reject);
 });
+
+const getPostsByCategory = (id) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/posts`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const usersPosts = Object.values(data).filter((item) => item.category_id.id === id);
+      resolve(usersPosts);
+    })
+    .catch(reject);
+});
+
 const deletePosts = (id) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/posts/${id}`, {
     method: 'DELETE',
@@ -77,5 +93,5 @@ const createPost = (payload) => new Promise((resolve, reject) => {
 });
 
 export {
-  getAllPosts, deletePosts, getSinglePost, updatePost, createPost, getMyPosts,
+  getAllPosts, deletePosts, getSinglePost, updatePost, createPost, getMyPosts, getPostsByCategory,
 };
