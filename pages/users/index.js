@@ -5,13 +5,21 @@ import UserCard from '../../components/UserCard';
 function Home() {
   const [users, setUsers] = useState([]);
 
-  const displayUser = () => {
-    getUsers().then((data) => setUsers(data));
+  const displayUsers = () => {
+    getUsers()
+      .then((usersData) => {
+        setUsers(usersData);
+      })
+      .catch((error) => {
+        console.error('Error fetching users:', error);
+      });
   };
-  useEffect(() => {
-    displayUser();
-  }, []);
 
+  useEffect(() => {
+    // Fetch all users from the API
+    displayUsers();
+  }, []);
+  console.warn(users);
   return (
     <article className="text-center my-4" id="users">
       <h1 style={{ marginTop: '40px' }}>Users</h1>
@@ -25,12 +33,13 @@ function Home() {
             id="user-section"
           >
             <UserCard
+              id={user.id}
               first_name={user.first_name}
               last_name={user.last_name}
               profile_image_url={user.profile_image_url}
               created_on={user.created_on}
               email={user.email}
-              onUpdate={displayUser}
+              uid={user.uid}
             />
           </section>
         ))}

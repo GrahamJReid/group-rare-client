@@ -25,6 +25,7 @@ function MyPosts() {
       <div>
         <div>
           <Button
+            className="create-post-button"
             onClick={() => {
               router.push('/posts/new');
             }}

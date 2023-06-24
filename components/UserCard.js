@@ -1,9 +1,11 @@
 /* eslint-disable camelcase */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
+import { useAuth } from '../utils/context/authContext';
+import { createSubscription, deleteSubscription, getMySubscriptions } from '../utils/data/subscriptionData';
 
 const UserCard = ({
   id,
@@ -12,15 +14,26 @@ const UserCard = ({
   profile_image_url,
   created_on,
   email,
-  onUpdate,
+  uid,
 }) => {
   const router = useRouter();
-
-  const deleteUser = () => {
-    if (window.confirm('Delete user?')) {
-      deleteUser(id).then(() => onUpdate());
-    }
+  const { user } = useAuth();
+  const [counter, setCounter] = useState(0);
+  const payload = {
+    createdOn: '2023-06-14',
+    endedOn: '2023-06-14',
+    authorId: `${user.uid}`,
+    followId: `${uid}`,
   };
+  console.warn(payload);
+
+  useEffect(() => {
+    getMySubscriptions(user.uid).then((data) => {
+      console.warn(data);
+      (data.map((post) => (
+        (post.follower_id.uid === uid ? setCounter(1) : ''))));
+    });
+  }, [id, uid, user.uid]);
 
   return (
     <Card className="text-center" style={{ width: '200px' }}>
@@ -44,13 +57,47 @@ const UserCard = ({
           Edit User
         </Button>
         <Button
-          onClick={deleteUser}
+          onClick={() => {
+            router.push(`/users/${id}`);
+          }}
           style={{
             margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '75px',
           }}
         >
-          Delete
+          View
         </Button>
+
+        {counter === 0
+          ? (
+            <Button
+              onClick={
+
+                 () => {
+                   setCounter(1);
+                   createSubscription(payload);
+                 }
+                }
+            >
+              Subscribe
+            </Button>
+          ) : (
+            <Button
+              onClick={
+
+             () => {
+               getMySubscriptions(user.uid).then((data) => {
+                 console.warn(data);
+                 (data.map((post) => (
+                   (post.follower_id.uid === uid && post.author_id.uid === user.uid ? deleteSubscription(post.id) : ''))));
+               });
+               setCounter(0);
+             }
+            }
+            >
+              UnSubscribe
+            </Button>
+          )}
+
       </div>
 
     </Card>
@@ -64,7 +111,7 @@ UserCard.propTypes = {
   profile_image_url: PropTypes.string.isRequired,
   created_on: PropTypes.number.isRequired,
   email: PropTypes.number.isRequired,
-  onUpdate: PropTypes.func.isRequired,
+  uid: PropTypes.string.isRequired,
 };
 
 export default UserCard;
