@@ -17,9 +17,14 @@ export default function PostComments() {
     getAllCommentsByPostId(id).then((data) => setComments(data));
   };
 
+  const showPostTitle = () => {
+    // Function to fetch and display post title
+    getSinglePost(id).then((data) => setPostTitle(data));
+  };
+
   useEffect(() => {
     showComments(); // Fetch and display comments when the component mounts
-    getSinglePost(id).then((data) => setPostTitle(data)); // fetches and displays post title
+    showPostTitle(); // Fetch and display post title when component mounts
   }, []);
 
   return (
