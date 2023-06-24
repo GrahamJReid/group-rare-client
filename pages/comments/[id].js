@@ -4,9 +4,11 @@ import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import CommentCard from '../../components/comment/CommentCard';
 import { getAllCommentsByPostId } from '../../utils/data/commentData';
+import { getSinglePost } from '../../utils/data/postsData';
 
 export default function PostComments() {
   const [comments, setComments] = useState([]); // State variable to store comments
+  const [postTitle, setPostTitle] = useState([]); // state variable to store post title
   const router = useRouter(); // Next.js router object
   const { id } = router.query; // Extracting the value of the "id" query parameter from the URL
 
@@ -15,13 +17,20 @@ export default function PostComments() {
     getAllCommentsByPostId(id).then((data) => setComments(data));
   };
 
+  const showPostTitle = () => {
+    // Function to fetch and display post title
+    getSinglePost(id).then((data) => setPostTitle(data));
+  };
+
   useEffect(() => {
     showComments(); // Fetch and display comments when the component mounts
+    showPostTitle(); // Fetch and display post title when component mounts
   }, []);
 
   return (
     <article className="comments">
-      <h1>Comments</h1>
+      <h1>{postTitle.title}</h1>
+      <h2>Comments</h2>
       <Button onClick={() => {
         // Navigate to the "/comments/new" page with the "postId" query parameter set to "id"
         router.push({
