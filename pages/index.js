@@ -10,13 +10,15 @@ function Home() {
 
   useEffect(() => {
     getMySubscriptions(user.uid).then((data) => {
-      (data.map((post) => (
-        getMyPosts(post.follower_id.uid).then(setPosts)
-      )));
+      data.map((post) => (
+        getMyPosts(post.follower_id.uid).then((item) => {
+          item.map((singlePost) => (
+            setPosts((array) => ([...array, singlePost]))
+          ));
+        })
+      ));
     });
-  }, [user]);
-
-  console.warn(posts);
+  }, [user.uid]);
   return (
     <div
       className="text-center d-flex flex-column justify-content-center align-content-center"

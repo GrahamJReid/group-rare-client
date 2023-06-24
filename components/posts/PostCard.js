@@ -29,10 +29,10 @@ const PostCard = ({
   return (
     <>
       <div>
-        <Card className="text-center">
+        <Card className="text-center" style={{ width: '200px' }}>
           <Card.Header>Title: {title}</Card.Header>
           <Card.Body>
-            <img src={imageUrl} />
+            <img src={imageUrl} style={{ width: '200px' }} />
           </Card.Body>
           <Card.Footer className="text-muted">Author: {rareUserId.first_name}{rareUserId.last_name} </Card.Footer>
           <Button
