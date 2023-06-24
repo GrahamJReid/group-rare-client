@@ -14,7 +14,6 @@ const UserCard = ({
   profile_image_url,
   created_on,
   email,
-  onUpdate,
   uid,
 }) => {
   const router = useRouter();
@@ -27,11 +26,6 @@ const UserCard = ({
     followId: `${uid}`,
   };
   console.warn(payload);
-  const deleteUser = () => {
-    if (window.confirm('Delete user?')) {
-      deleteUser(id).then(() => onUpdate());
-    }
-  };
 
   useEffect(() => {
     getMySubscriptions(user.uid).then((data) => {
@@ -63,12 +57,14 @@ const UserCard = ({
           Edit User
         </Button>
         <Button
-          onClick={deleteUser}
+          onClick={() => {
+            router.push(`/users/${id}`);
+          }}
           style={{
             margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '75px',
           }}
         >
-          Delete
+          View
         </Button>
 
         {counter === 0
@@ -115,7 +111,6 @@ UserCard.propTypes = {
   profile_image_url: PropTypes.string.isRequired,
   created_on: PropTypes.number.isRequired,
   email: PropTypes.number.isRequired,
-  onUpdate: PropTypes.func.isRequired,
   uid: PropTypes.string.isRequired,
 };
 
