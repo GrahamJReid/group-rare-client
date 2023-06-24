@@ -29,13 +29,14 @@ const PostCard = ({
   return (
     <>
       <div>
-        <Card className="text-center" style={{ width: '500px' }}>
+        <Card className="post-card">
           <Card.Header>Title: {title}</Card.Header>
           <Card.Body>
             <img src={imageUrl} style={{ width: '200px' }} />
           </Card.Body>
           <Card.Footer className="text-muted">Author: {rareUserId.first_name}{rareUserId.last_name} </Card.Footer>
           <Button
+            className="post-card-button"
             onClick={() => {
               router.push(`/posts/${id}`);
             }}
@@ -48,10 +49,12 @@ const PostCard = ({
               <>
                 <Button
                   onClick={deletethisPost}
+                  className="post-card-button"
                 >
                   Delete
                 </Button>
                 <Button
+                  className="post-card-button"
                   onClick={() => {
                     router.push(`/posts/edit/${id}`);
                   }}
