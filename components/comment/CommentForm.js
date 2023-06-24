@@ -61,7 +61,6 @@ const CommentForm = ({ obj, postId }) => {
 
       // Call the updateComment function and handle the response
       updateComment(commentUpdate)
-        .then(console.warn(obj))
         .then(() => router.push(`/comments/${currentComment.postId}`));
     } else {
       // Call the createComment function and handle the response
