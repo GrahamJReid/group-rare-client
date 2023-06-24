@@ -1,77 +1,57 @@
+/* eslint-disable no-tabs */
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React, { useEffect, useState } from 'react';
-import UserCard from '../../components/users/UserCard';
-import { getUsers, updateUser } from '../../utils/data/userData';
-import RegisterForm from '../../components/RegisterForm';
+import { useRouter } from 'next/router';
+import { getSingleUser, getUserPosts } from '../../utils/data/userData';
+import PostCard from '../../components/posts/PostCard';
+// import { useAuth } from '../../utils/context/authContext';
 
-function Home() {
-  const [users, setUsers] = useState([]);
-  const [editingUserId, setEditingUserId] = useState(null);
+export default function ViewUser() {
+  const [userDetails, setUserDetails] = useState({});
+  const [userPosts, setUserPosts] = useState([]);
+  const router = useRouter();
+  const { id } = router.query;
+  // const { user } = useAuth();
 
-  const displayUsers = () => {
-    getUsers()
-      .then((usersData) => {
-        setUsers(usersData);
-      })
-      .catch((error) => {
-        console.error('Error fetching users:', error);
-      });
-  };
+  // const getAllUserPosts = () => {
+  //   viewUserDetails(id).then(setUserDetails);
+  // };
 
   useEffect(() => {
-    // Fetch all users from the API
-    displayUsers();
-  }, []);
-
-  const handleUpdateUser = (userId) => {
-    // Call the API to update the user's information
-    updateUser(userId)
-      .then(() => {
-        displayUsers();
-        setEditingUserId(null);
-      })
-      .catch((error) => {
-        console.error('Error updating user:', error);
+    getSingleUser(id).then((data) => {
+      setUserDetails(data);
+      console.warn(data);
+      getUserPosts(data.uid).then((posts) => {
+        setUserPosts(posts);
       });
-  };
+    });
+  }, [id]);
 
-  const handleEditUser = (userId) => {
-    setEditingUserId(userId);
-  };
+  console.warn(userPosts);
 
   return (
-    <article className="text-center my-4" id="users">
-      <h1 style={{ marginTop: '40px' }}>Users</h1>
-
-      <div className="text-center my-4 d-flex">
-        {users.map((user) => (
-          <section
-            key={`user--${user.id}`}
-            className="user"
-            style={{ margin: '40px' }}
-            id="user-section"
-          >
-            {editingUserId === user.id ? (
-              <RegisterForm
-                userId={user.id}
-                user={user}
-                updateUser={handleUpdateUser}
-              />
-            ) : (
-              <UserCard
-                id={user.id}
-                first_name={user.first_name}
-                last_name={user.last_name}
-                profile_image_url={user.profile_image_url}
-                created_on={user.created_on}
-                email={user.email}
-                onUpdate={handleEditUser}
-              />
-            )}
-          </section>
-        ))}
+    <div>
+      <h1 style={{ marginTop: '75px' }}>User Details</h1>
+      <div className="mt-5 d-flex flex-wrap" style={{ marginTop: '100px' }}>
+        <div className="d-flex flex-column">
+          <img src={userDetails.profile_image_url} alt={userDetails.first_name} style={{ width: '300px', marginRight: ' 100px' }} />
+        </div>
+        <div className="text-grey ms-5 details">
+          <h5>
+            {userDetails.first_name} {userDetails.last_name}
+          </h5>
+          Email: <a href={`mailto:${userDetails.email}`}>{userDetails.email}</a>
+          <hr />
+          <p>Bio: {userDetails.bio}</p>
+        </div>
+        <div className="d-flex flex-wrap text-center" style={{ marginTop: '50px' }}>
+          {userPosts.map((post) => (
+            <section key={`post--${post.id}`} className="post">
+              <PostCard id={post.id} title={post.title} imageUrl={post.image_url} rareUserId={post.rare_user_id} />
+            </section>
+          ))}
+        </div>
       </div>
-    </article>
+    </div>
   );
 }
-
-export default Home;

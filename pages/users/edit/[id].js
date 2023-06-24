@@ -7,12 +7,13 @@ import RegisterForm from '../../../components/RegisterForm';
 export default function EditUser() {
   const router = useRouter();
   const { id } = router.query;
-  const [editUser, setEditUser] = useState({});
+  
   useEffect(() => {
     getSingleUser(id).then((obj) => {
       setEditUser(obj);
     });
   }, [id]);
+
   return (
     <>
       <Head>
