@@ -29,7 +29,7 @@ const PostCard = ({
   return (
     <>
       <div>
-        <Card className="text-center" style={{ width: '200px' }}>
+        <Card className="text-center" style={{ width: '500px' }}>
           <Card.Header>Title: {title}</Card.Header>
           <Card.Body>
             <img src={imageUrl} style={{ width: '200px' }} />

@@ -20,3 +20,9 @@ a {
 body {
   background-color: #d8e2dc;
 }
+.homePostsDiv{
+  border:orange 5px solid;
+  height:700px;
+  width:700px;
+  overflow-y:auto;
+}

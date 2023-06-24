@@ -10,15 +10,19 @@ function Home() {
 
   useEffect(() => {
     getMySubscriptions(user.uid).then((data) => {
-      data.map((post) => (
-        getMyPosts(post.follower_id.uid).then((item) => {
-          item.map((singlePost) => (
-            setPosts((array) => ([...array, singlePost]))
-          ));
-        })
-      ));
+      const postArray = [];
+      Promise.all(data.map((post) => getMyPosts(post.follower_id.uid)))
+        .then((results) => {
+          results.forEach((item) => {
+            item.forEach((singlePost) => {
+              postArray.push(singlePost);
+            });
+          });
+          setPosts(postArray);
+        });
     });
   }, [user.uid]);
+
   return (
     <div
       className="text-center d-flex flex-column justify-content-center align-content-center"
@@ -33,11 +37,14 @@ function Home() {
       <p>Subscriber Posts</p>
       <p>Home page shows posts user subscribes to</p>
       <div />
-      {posts.map((post) => (
-        <section key={`post--${post.id}`} className="post">
-          <PostCard id={post.id} title={post.title} imageUrl={post.image_url} rareUserId={post.rare_user_id} />
-        </section>
-      ))}
+
+      <div className="homePostsDiv">
+        {posts.map((post) => (
+          <section key={`post--${post.id}`} className="post">
+            <PostCard id={post.id} title={post.title} imageUrl={post.image_url} rareUserId={post.rare_user_id} />
+          </section>
+        ))}
+      </div>
     </div>
   );
 }
