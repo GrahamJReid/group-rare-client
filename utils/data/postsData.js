@@ -48,13 +48,12 @@ const getPostsByCategory = (id) => new Promise((resolve, reject) => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-    }, // you technically do not need the options object for GET requests, but using it here for consistency
+    },
   })
     .then((response) => response.json())
     .then((data) => {
-      const PostbyCat = Object.values(data).filter((item) => item.title);
-      resolve(PostbyCat);
-      console.warn(PostbyCat);
+      const usersPosts = Object.values(data).filter((item) => item.category_id.id === id);
+      resolve(usersPosts);
     })
     .catch(reject);
 });

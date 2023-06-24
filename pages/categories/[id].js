@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 // import { getSinglePost } from '../../utils/data/postsData';
 import { getPostsByCategory } from '../../utils/data/postsData';
 import PostCard from '../../components/posts/PostCard';
+import { getSingleCategory } from '../../utils/data/categoriesData';
 
 function CategoryDetails() {
   const [post, setPost] = useState([]);
@@ -14,13 +15,13 @@ function CategoryDetails() {
   const { id } = router.query;
 
   useEffect(() => {
-    getPostsByCategory(id).then((data) => {
-      setPost(data);
+    getSingleCategory(id).then((data) => {
+      getPostsByCategory(data.id).then((posts) => setPost(posts));
+
       // setCategory(data[0]);
     });
   }, [id]);
-
-  console.warn(id);
+  console.warn(post);
   return (
     <>
       {/* // <h1>{category.category_id.label}</h1> */}

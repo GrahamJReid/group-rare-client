@@ -30,14 +30,13 @@ export default function CategoryForm({ obj }) {
   const handleSubmit = (e) => {
     // Prevent form from being submitted
     e.preventDefault();
-    if (obj.id) {
-      const category = {
-        label: setformInput.label,
-      };
 
-      // Send POST request to your API
-      createCategory(category).then(() => router.push('/categories'));
-    }
+    const category = {
+      label: formInput.label,
+    };
+
+    // Send POST request to your API
+    createCategory(category).then(() => router.push('/categories'));
   };
 
   return (
@@ -45,7 +44,7 @@ export default function CategoryForm({ obj }) {
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
 
-          <Form.Label>C</Form.Label>
+          <Form.Label>label</Form.Label>
           <Form.Control
             type="text"
             name="label"
