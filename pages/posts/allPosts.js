@@ -23,6 +23,7 @@ function AllPosts() {
       <div>
         <div>
           <Button
+            className="create-post-button"
             onClick={() => {
               router.push('/posts/new');
             }}
@@ -31,11 +32,15 @@ function AllPosts() {
           </Button>
         </div>
       </div>
-      {posts.map((post) => (
-        <section key={`post--${post.id}`} className="post">
-          <PostCard id={post.id} title={post.title} imageUrl={post.image_url} onUpdate={displayPosts} rareUserId={post.rare_user_id} />
-        </section>
-      ))}
+      <div className="post-div">
+        {posts.map((post) => (
+
+          <section key={`post--${post.id}`}>
+            <PostCard id={post.id} title={post.title} imageUrl={post.image_url} onUpdate={displayPosts} rareUserId={post.rare_user_id} />
+          </section>
+
+        ))}
+      </div>
     </>
   );
 }

@@ -20,8 +20,8 @@ const getUsers = () => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getSingleUser = (uid) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/users/${uid}.json`, {
+const getSingleUser = (id) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/users/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -46,8 +46,8 @@ const createUser = (payload) => new Promise((resolve, reject) => {
 });
 
 const updateUser = (payload) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/users/${payload.uid}.json`, {
-    method: 'PATCH',
+  fetch(`${clientCredentials.databaseURL}/users/${payload.id}.json`, {
+    method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -58,20 +58,8 @@ const updateUser = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const deleteUser = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/users/${uid}.json`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => resolve((data)))
-    .catch(reject);
-});
-
-const favoriteUser = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/users.json?orderBy="uid"&equalTo="${uid}"`, {
+const getUserPosts = (uid) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/posts`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -79,22 +67,25 @@ const favoriteUser = (uid) => new Promise((resolve, reject) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      const faveUser = Object.values(data).filter((item) => item.favorite);
-      resolve(faveUser);
+      const usersPosts = Object.values(data).filter((item) => item.rare_user_id.uid === uid);
+      resolve(usersPosts);
     })
     .catch(reject);
 });
 
-const getUserPosts = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/posts.json?orderBy="uid"&equalTo="${uid}"`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'applications.json',
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => resolve(Object.values(data)))
-    .catch(reject);
+const viewUserPosts = (id) => new Promise((resolve, reject) => {
+  Promise.all([getSingleUser(id), getUserPosts(id)])
+    .then(([userObject, userPostsArray]) => {
+      resolve({ ...userObject, posts: userPostsArray });
+    })
+    .catch((error) => reject(error));
+});
+
+const viewUserDetails = (id) => new Promise((resolve, reject) => {
+  Promise.all([getSingleUser(id), viewUserPosts(id)])
+    .then(([userObject, userPostsArray]) => {
+      resolve({ ...userObject, posts: userPostsArray });
+    }).catch((error) => reject(error));
 });
 
 export {
@@ -102,7 +93,7 @@ export {
   getSingleUser,
   createUser,
   updateUser,
-  deleteUser,
-  favoriteUser,
   getUserPosts,
+  viewUserDetails,
+  viewUserPosts,
 };
