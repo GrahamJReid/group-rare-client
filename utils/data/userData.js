@@ -58,19 +58,7 @@ const updateUser = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const getUserPosts = (id) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/posts.json?orderBy="id"&equalTo="${id}"`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'applications.json',
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => resolve(Object.values(data)))
-    .catch(reject);
-});
-
-const viewMyPosts = (id) => new Promise((resolve, reject) => {
+const getUserPosts = (uid) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/posts`, {
     method: 'GET',
     headers: {
@@ -79,24 +67,24 @@ const viewMyPosts = (id) => new Promise((resolve, reject) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      const usersPosts = Object.values(data).filter((item) => item.rare_user.uid === id);
+      const usersPosts = Object.values(data).filter((item) => item.rare_user_id.uid === uid);
       resolve(usersPosts);
     })
     .catch(reject);
 });
 
-const viewUserDetails = (uid) => new Promise((resolve, reject) => {
-  Promise.all([getSingleUser(uid), viewMyPosts(uid)])
+const viewUserPosts = (id) => new Promise((resolve, reject) => {
+  Promise.all([getSingleUser(id), getUserPosts(id)])
     .then(([userObject, userPostsArray]) => {
       resolve({ ...userObject, posts: userPostsArray });
-    }).catch((error) => reject(error));
+    })
+    .catch((error) => reject(error));
 });
 
-const viewUserPosts = (uid) => new Promise((resolve, reject) => {
-  Promise.all([getSingleUser(uid),
-    getUserPosts(uid)])
+const viewUserDetails = (id) => new Promise((resolve, reject) => {
+  Promise.all([getSingleUser(id), viewUserPosts(id)])
     .then(([userObject, userPostsArray]) => {
-      resolve({ ...userObject, tutorials: userPostsArray });
+      resolve({ ...userObject, posts: userPostsArray });
     }).catch((error) => reject(error));
 });
 
@@ -108,5 +96,4 @@ export {
   getUserPosts,
   viewUserDetails,
   viewUserPosts,
-  viewMyPosts,
 };
