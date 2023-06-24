@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable no-tabs */
 /* eslint-disable no-mixed-spaces-and-tabs */
 import React, { useEffect, useState } from 'react';
