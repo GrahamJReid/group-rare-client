@@ -15,6 +15,7 @@ function Home() {
       )));
     });
   }, [user]);
+
   console.warn(posts);
   return (
     <div
