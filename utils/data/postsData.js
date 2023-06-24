@@ -42,6 +42,23 @@ const getSinglePost = (id) => new Promise((resolve, reject) => {
     .then((data) => resolve((data)))
     .catch(reject);
 });
+
+const getPostsByCategory = (id) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/posts`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    }, // you technically do not need the options object for GET requests, but using it here for consistency
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const PostbyCat = Object.values(data).filter((item) => item.title);
+      resolve(PostbyCat);
+      console.warn(PostbyCat);
+    })
+    .catch(reject);
+});
+
 const deletePosts = (id) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/posts/${id}`, {
     method: 'DELETE',
@@ -77,5 +94,5 @@ const createPost = (payload) => new Promise((resolve, reject) => {
 });
 
 export {
-  getAllPosts, deletePosts, getSinglePost, updatePost, createPost, getMyPosts,
+  getAllPosts, deletePosts, getSinglePost, updatePost, createPost, getMyPosts, getPostsByCategory,
 };
