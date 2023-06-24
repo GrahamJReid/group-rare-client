@@ -1,16 +1,18 @@
+/* eslint-disable react/forbid-prop-types */
 import PropTypes from 'prop-types';
-// import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Card } from 'react-bootstrap';
-import { deleteComment } from '../../utils/data/commentData';
+import { deleteComment, getUserForComments } from '../../utils/data/commentData';
+import { useAuth } from '../../utils/context/authContext';
 
 const CommentCard = ({
   id,
-  // authorId,
-  // postId,
+  authorId,
   content,
   createdOn,
   onUpdate,
+  commenterName,
 }) => {
   const deleteThisComment = () => {
     if (window.confirm('Delete Comment?')) {
@@ -19,27 +21,19 @@ const CommentCard = ({
   };
 
   const router = useRouter();
+  const { user } = useAuth();
+  const [rareUser, setRareUser] = useState({});
 
-  // const [authorName, setAuthorName] = useState('');
-
-  // // Fetch the author's name based on the authorId
-  // useEffect(() => {
-  //   // Assuming you have a function to fetch the user data by id, like `fetchUserById`
-  //   fetchUserById(authorId)
-  //     .then((user) => {
-  //       setAuthorName(user.name);
-  //     })
-  //     .catch((error) => {
-  //       // Handle error if user data fetching fails
-  //       console.error('Failed to fetch user data:', error);
-  //     });
-  // }, [authorId]);
+  useEffect(() => {
+    getUserForComments(user.uid).then((data) => {
+      setRareUser(data[0]);
+    });
+  }, [user.uid]);
 
   return (
     <Card className="text-center">
       <Card.Header>
-        {/* {authorName} */}
-        Author of Comment
+        {commenterName}
       </Card.Header>
       <Card.Body>
         <Card.Title>
@@ -50,15 +44,20 @@ const CommentCard = ({
         </Card.Text>
       </Card.Body>
       <Card.Footer>
-        <Button onClick={() => {
-          router.push(`/comments/edit/${id}`);
-        }}
-        >
-          Edit Comment
-        </Button>
-        <Button onClick={deleteThisComment}>
-          Delete Comment
-        </Button>
+        {rareUser.id === authorId
+          ? (
+            <>
+              <Button onClick={() => {
+                router.push(`/comments/edit/${id}`);
+              }}
+              >
+                Edit Comment
+              </Button>
+              <Button onClick={deleteThisComment}>
+                Delete Comment
+              </Button>
+            </>
+          ) : ''}
       </Card.Footer>
     </Card>
   );
@@ -66,10 +65,10 @@ const CommentCard = ({
 
 CommentCard.propTypes = {
   id: PropTypes.number.isRequired,
-  // authorId: PropTypes.number.isRequired,
-  // postId: PropTypes.number.isRequired,
+  authorId: PropTypes.number.isRequired,
   content: PropTypes.string.isRequired,
   createdOn: PropTypes.string.isRequired,
+  commenterName: PropTypes.string.isRequired,
   onUpdate: PropTypes.func.isRequired,
 };
 

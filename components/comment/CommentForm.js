@@ -5,32 +5,36 @@ import { Button, Form } from 'react-bootstrap';
 import { createComment, updateComment } from '../../utils/data/commentData';
 import { useAuth } from '../../utils/context/authContext';
 
-const initialState = {
-  authorId: 0,
-  postId: 0,
-  content: '',
-};
+// Define the CommentForm component
+const CommentForm = ({ obj, postId }) => {
+  // Get the authenticated user from the useAuth hook
+  const { user } = useAuth();
 
-// CommentForm component
-const CommentForm = ({ obj }) => {
-  const [currentComment, setCurrentComment] = useState(initialState); // State for storing current comment data
-  const currentDate = new Date().toISOString().split('T')[0];
-  const router = useRouter(); // Router instance from Next.js
-  const { user } = useAuth(); // Accessing authentication context
+  // Set up the currentComment state using the useState hook
+  const [currentComment, setCurrentComment] = useState({
+    authorId: user.id,
+    postId: Number(postId),
+  });
 
+  // Get the router object from the useRouter hook
+  const router = useRouter();
+
+  // Use the useEffect hook to update the currentComment state when the obj or user changes
   useEffect(() => {
-    // When the component mounts or the "obj" or "user" changes, update the current comment state
+    // Check if obj has an id
     if (obj.id) {
+      // Set the currentComment state with the values from obj
       setCurrentComment({
         id: obj.id,
-        authorId: obj.authorId,
-        postId: obj.postId,
-        comment: obj.content,
-        createdOn: obj.createdOn,
+        authorId: obj.author_id,
+        postId: obj.post_id,
+        content: obj.content,
+        createdOn: obj.created_on,
       });
     }
   }, [obj, user]);
 
+  // Define the handleChange function to update the currentComment state
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -40,49 +44,41 @@ const CommentForm = ({ obj }) => {
     }));
   };
 
+  // Define the handleSubmit function to handle form submission
   const handleSubmit = (e) => {
-    // Prevent the form from being submitted
     e.preventDefault();
 
-    // Check if the comment has an ID (existing comment being updated)
+    // Check if obj has an id
     if (obj.id) {
       // Prepare comment data for update
       const commentUpdate = {
         id: currentComment.id,
-        authorId: currentComment.authorId,
-        postId: currentComment.postId,
+        authorId: currentComment.author_id,
+        postId: currentComment.post_id,
         content: currentComment.content,
-        createdOn: currentComment.createdOn,
-        // rareUserId: user.uid,
+        createdOn: currentComment.created_on,
       };
-      // Update the comment data using the updateComment function
+
+      // Call the updateComment function and handle the response
       updateComment(commentUpdate)
-        .then(() => router.push(`/comments?postId=${obj.postId}`)); // Redirect to the comments page after the update
+        .then(console.warn(obj))
+        .then(() => router.push(`/comments/${currentComment.postId}`));
     } else {
-      // Prepare comment data for creation
-      const comment = {
-        authorId: currentComment.authorId,
-        postId: currentComment.postId,
-        content: currentComment.content,
-        createdOn: currentDate,
-        // rareUserId: user.uid,
-      };
-      // Create a new comment by sending a POST request to the server using the createComment function
-      createComment(comment).then(() => router.push(`/comments?postId=${comment.postId}`)); // Redirect to the comments page after the creation
+      // Call the createComment function and handle the response
+      createComment(currentComment)
+        .then((comment) => router.push(`/comments/${comment.post_id}`));
     }
   };
 
+  // Render the CommentForm component
   return (
     <>
       <Form onSubmit={handleSubmit}>
-
         <h2 className="text-white mt-5">{obj.id ? 'Update' : 'Create'} Comment</h2>
-
         <Form.Group className="mb-3">
           <Form.Label>Content</Form.Label>
           <Form.Control name="content" required value={currentComment.content} onChange={handleChange} />
         </Form.Group>
-
         <Button variant="primary" type="submit">
           Submit
         </Button>
@@ -91,18 +87,23 @@ const CommentForm = ({ obj }) => {
   );
 };
 
+// Define the prop types for the CommentForm component
 CommentForm.propTypes = {
   obj: PropTypes.shape({
     id: PropTypes.number,
-    authorId: PropTypes.number,
-    postId: PropTypes.number,
+    author_id: PropTypes.number,
+    post_id: PropTypes.number,
     content: PropTypes.string,
-    createdOn: PropTypes.string,
+    created_on: PropTypes.string,
   }),
+  postId: PropTypes.number,
 };
 
+// Set default props for the CommentForm component
 CommentForm.defaultProps = {
-  obj: initialState,
+  obj: {},
+  postId: 0,
 };
 
+// Export the CommentForm component as the default export
 export default CommentForm;

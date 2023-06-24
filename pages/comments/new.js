@@ -1,10 +1,14 @@
+import { useRouter } from 'next/router';
 import CommentForm from '../../components/comment/CommentForm';
 
-const NewEvent = () => (
-  <div>
-    <h2>Create Comment</h2>
-    <CommentForm />
-  </div>
-);
+export default function NewEvent() {
+  const router = useRouter();
+  const { postId } = router.query;
 
-export default NewEvent;
+  return (
+    <div>
+      <h2>Create Comment</h2>
+      <CommentForm postId={postId} />
+    </div>
+  );
+}

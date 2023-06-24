@@ -25,6 +25,21 @@ const getSingleComment = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const getUserForComments = (uid) => new Promise((resolve, reject) => {
+  fetch(`${clientCredentials.databaseURL}/users`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const userForComments = Object.values(data).filter((item) => item.uid === uid);
+      resolve(userForComments);
+    })
+    .catch(reject);
+});
+
 const getAllCommentsByPostId = (postId) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/comments?postId=${postId}`, {
     method: 'GET',
@@ -61,5 +76,5 @@ const deleteComment = (comment) => new Promise((resolve, reject) => {
 });
 
 export {
-  createComment, getAllCommentsByPostId, getSingleComment, updateComment, deleteComment,
+  createComment, getAllCommentsByPostId, getUserForComments, getSingleComment, updateComment, deleteComment,
 };
