@@ -29,18 +29,20 @@ export default function PostComments() {
 
   return (
     <article className="comments">
-      <h1>{postTitle.title}</h1>
+      <h1 style={{ marginTop: '30px' }}>{postTitle.title}</h1>
       <h2>Comments</h2>
-      <Button onClick={() => {
+      <Button
+        style={{ marginBottom: '30px', backgroundColor: '#003049' }}
+        onClick={() => {
         // Navigate to the "/comments/new" page with the "postId" query parameter set to "id"
-        router.push({
-          pathname: '/comments/new', // specifies the destination pathname or URL path that the router should navigate to
-          query: { // defines the query parameters to be included in the URL
+          router.push({
+            pathname: '/comments/new', // specifies the destination pathname or URL path that the router should navigate to
+            query: { // defines the query parameters to be included in the URL
             // query parameters are used to pass additional data to the target page
-            postId: id, // sets the postId query parameter to the value of the id variable
-          },
-        });
-      }}
+              postId: id, // sets the postId query parameter to the value of the id variable
+            },
+          });
+        }}
       >
         Add a Comment
       </Button>

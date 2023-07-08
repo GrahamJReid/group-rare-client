@@ -36,7 +36,7 @@ const UserCard = ({
   }, [id, uid, user.uid]);
 
   return (
-    <Card className="text-center" style={{ width: '200px' }}>
+    <Card className="text-center" style={{ width: '220px' }}>
       <Card.Img variant="top" src={profile_image_url} alt={first_name} style={{ height: '250px' }} />
       <Card.Header>{first_name} {last_name}</Card.Header>
       <Card.Body style={{ height: '100px' }}>
@@ -46,7 +46,7 @@ const UserCard = ({
         </Card.Text>
       </Card.Body>
       <div className="d-flex">
-        <Button
+        {/* <Button
           onClick={() => {
             router.push(`/users/edit/${id}`);
           }}
@@ -55,13 +55,13 @@ const UserCard = ({
           }}
         >
           Edit User
-        </Button>
+        </Button> */}
         <Button
           onClick={() => {
             router.push(`/users/${id}`);
           }}
           style={{
-            margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '75px',
+            margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '90px',
           }}
         >
           View
@@ -70,6 +70,9 @@ const UserCard = ({
         {counter === 0
           ? (
             <Button
+              style={{
+                margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '90px',
+              }}
               onClick={
 
                  () => {
@@ -82,6 +85,9 @@ const UserCard = ({
             </Button>
           ) : (
             <Button
+              style={{
+                margin: '10px', backgroundColor: '#6699CC', fontSize: '10px', width: '90px',
+              }}
               onClick={
 
              () => {

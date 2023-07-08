@@ -30,11 +30,11 @@ export default function NavBar() {
               <Nav.Link style={{ color: '#d8e2dc', marginLeft: '20px' }}>My Posts</Nav.Link>
             </Link>
             <Link passHref href="/categories">
-              <Nav.Link style={{ color: '#d8e2dc', marginLeft: '20px' }}>Category Manager</Nav.Link>
+              <Nav.Link style={{ color: '#d8e2dc', marginLeft: '20px', marginRight: '550px' }}>Category Manager</Nav.Link>
             </Link>
-            <Link passHref href="/tags">
+            {/* <Link passHref href="/tags">
               <Nav.Link style={{ color: '#d8e2dc', marginRight: '350px', marginLeft: '20px' }}>Tag Manager</Nav.Link>
-            </Link>
+            </Link> */}
             <Button variant="danger" onClick={signOut}>
               Sign Out
             </Button>

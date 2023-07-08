@@ -34,7 +34,7 @@ const PostCard = ({
           <Card.Body>
             <img src={imageUrl} style={{ width: '200px' }} />
           </Card.Body>
-          <Card.Footer className="text-muted">Author: {rareUserId.first_name}{rareUserId.last_name} </Card.Footer>
+          <Card.Footer className="text-white">Author: {rareUserId.first_name}{rareUserId.last_name} </Card.Footer>
           <Button
             className="post-card-button"
             onClick={() => {

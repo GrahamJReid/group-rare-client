@@ -32,21 +32,23 @@ function PostDetails() {
   };
   return (
     <>
-      <h1> Title: {post.title}</h1>
+      <h1 style={{ marginTop: '30px' }}> Title: {post.title}</h1>
       <h3>Published: {post.publication_date}</h3>
       <h2>Author: {author}</h2>
-      <h4>Category: {category}</h4>
+      <h4 style={{ marginBottom: '30px' }}>Category: {category}</h4>
       <img src={post.image_url} />
-      <p>{post.content}</p>
+      <p style={{ margin: '10px' }}>{post.content}</p>
       {rareUser === user.uid
         ? (
           <>
             <Button
+              style={{ margin: '10px', backgroundColor: '#003049' }}
               onClick={deletethisPost}
             >
               Delete
             </Button>
             <Button
+              style={{ margin: '10px', backgroundColor: '#003049' }}
               onClick={() => {
                 router.push(`/posts/edit/${id}`);
               }}
@@ -56,6 +58,7 @@ function PostDetails() {
           </>
         ) : ''}
       <Button
+        style={{ margin: '10px', backgroundColor: '#003049' }}
         onClick={() => {
           router.push(`/comments/${id}`);
         }}

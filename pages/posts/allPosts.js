@@ -19,10 +19,11 @@ function AllPosts() {
 
   return (
     <>
-      <h1>All Posts page title</h1>
+      <h1 style={{ marginTop: '30px' }}>All Posts</h1>
       <div>
         <div>
           <Button
+            style={{ marginTop: '20px', marginBottom: '20px', width: '300px' }}
             className="create-post-button"
             onClick={() => {
               router.push('/posts/new');
