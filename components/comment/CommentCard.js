@@ -31,7 +31,7 @@ const CommentCard = ({
   }, [user.uid]);
 
   return (
-    <Card className="text-center">
+    <Card className="text-center" style={{ marginBottom: '30px' }}>
       <Card.Header>
         {commenterName}
       </Card.Header>
@@ -47,13 +47,18 @@ const CommentCard = ({
         {rareUser.id === authorId
           ? (
             <>
-              <Button onClick={() => {
-                router.push(`/comments/edit/${id}`);
-              }}
+              <Button
+                style={{ margin: '10px', backgroundColor: '#003049' }}
+                onClick={() => {
+                  router.push(`/comments/edit/${id}`);
+                }}
               >
                 Edit Comment
               </Button>
-              <Button onClick={deleteThisComment}>
+              <Button
+                style={{ margin: '10px', backgroundColor: '#003049' }}
+                onClick={deleteThisComment}
+              >
                 Delete Comment
               </Button>
             </>

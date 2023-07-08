@@ -21,10 +21,11 @@ function MyPosts() {
 
   return (
     <>
-      <h1>My Posts</h1>
+      <h1 style={{ margin: '30px' }}>My Posts</h1>
       <div>
         <div>
           <Button
+            style={{ marginLeft: '30px', width: '300px' }}
             className="create-post-button"
             onClick={() => {
               router.push('/posts/new');

@@ -25,20 +25,27 @@ function Home() {
 
   return (
     <div
-      className="text-center d-flex flex-column justify-content-center align-content-center"
+      className="text-center d-flex flex-column"
       style={{
         height: '90vh',
-        padding: '30px',
-        maxWidth: '400px',
+        paddingTop: '100px',
+        maxWidth: '800px',
         margin: '0 auto',
       }}
     >
       <h1>Hello {user.fbUser.displayName}! </h1>
       <p>Subscriber Posts</p>
-      <p>Home page shows posts user subscribes to</p>
       <div />
 
-      <div className="homePostsDiv">
+      <div
+        className="homePostsDiv text-center d-flex flex-column"
+        style={{
+          height: '100vh',
+          padding: '40px',
+          maxWidth: '800px',
+          margin: '0 auto',
+        }}
+      >
         {posts.map((post) => (
           <section key={`post--${post.id}`} className="post">
             <PostCard id={post.id} title={post.title} imageUrl={post.image_url} rareUserId={post.rare_user_id} />

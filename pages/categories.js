@@ -25,12 +25,13 @@ function AllCategories() {
             onClick={() => {
               router.push('/categories/new');
             }}
+            style={{ marginTop: '50px', marginBottom: '50px', backgroundColor: '#003049' }}
           >
             New Category
           </Button>
         </div>
       </div>
-      <h1>Categories</h1>
+      <h1 style={{ marginBottom: '50px' }}>Categories</h1>
       {categories.map((category) => (
         <CategoryCard id={category.id} label={category.label} onUpdate={getCategories} />
       ))}
